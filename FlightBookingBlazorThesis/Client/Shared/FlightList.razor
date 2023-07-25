@@ -3,20 +3,22 @@
 <u1 "class=list-unstyled">
     @foreach (var flight in Flights)
     {
-        <div class= "media-img_wrapper mr-2">
-                <a href="#">
-                    <img class="media-img" src="@flight.ImageUrl" atl="@flight.Destination" />
-                </a>
-        </div>
-        <div class="media-body">
-            <a href="#">
-                <h4 class="mb-0">@flight.Destination</h4>
-                 </a>
-            <p>@flight.Details</p>
-            <h5 class="price">
-                €@flight.Price
-            </h5>
-        </div>
+        <li class="media my-3">
+            <div class= "media-img_wrapper mr-2">
+                    <a href="#">
+                        <img class="media-img" src="@flight.ImageUrl" atl="@flight.Destination" />
+                    </a>
+                 </div>
+                 <div class="media-body">
+                    <a href="#">
+                         <h4 class="mb-0">@flight.Destination</h4>
+                    </a>
+                <p>@flight.Details</p>
+                <h5 class="price">
+                    €@flight.Price
+                </h5>
+            </div>
+        </li>
     }
 
 </u1>
@@ -27,6 +29,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        Flights = await Http.GetFromJsonAsync<List<Flight>>("api/Flight");
+        var result = await Http.GetFromJsonAsync<List<Flight>>("api/Flight");
+        if(result != null)
+        Flights = result;
     }
 }
