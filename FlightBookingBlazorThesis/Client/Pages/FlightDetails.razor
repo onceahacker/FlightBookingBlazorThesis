@@ -3,7 +3,7 @@
 
 @if(flight == null)
 {
-    <span> Loading the flight deatil...</span>
+    <span>@message </span>
 }
 else
 {
@@ -23,13 +23,23 @@ else
 }
 
 @code {
-    private Flight? flight = null; 
+    private Flight? flight = null;
+    private string message = string.Empty;
 
     [Parameter]
     public int Number { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {
-        flight = FlightService.Flights.Find(f => f.Number == Number);
+        message = "Loading the flight deatils...";
+        var result = await FlightService.GetFlight(Number);
+        if(!result.Success)
+        {
+            message = result.Message;
+        }
+        else
+        {
+            flight = result.Data;
+        }
     }
 }

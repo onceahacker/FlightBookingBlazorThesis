@@ -12,6 +12,12 @@ namespace FlightBookingBlazorThesis.Client.Services.FlightService
         }
         public List<Flight> Flights { get ; set; } = new List<Flight>();
 
+        public async Task<ServiceResponse<Flight>> GetFlight(int flightNumber)
+        {
+            var result = await _http.GetFromJsonAsync<ServiceResponse<Flight>>($"api/flight/{flightNumber}");
+            return result;
+        }
+
         public async Task GetFlights()
         {
             var result = await _http.GetFromJsonAsync<ServiceResponse<List<Flight>>>("api/flight");

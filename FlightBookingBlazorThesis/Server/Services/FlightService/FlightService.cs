@@ -17,7 +17,7 @@
             if (flight == null)
             {
                 response.Success = false;
-                response.Message = "Sorry, but this flight is fully booked.";
+                response.Message = "Sorry, but this flight is fully booked or It doesnt exist.";
             }
             else
             {

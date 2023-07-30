@@ -4,5 +4,6 @@
     {
         List<Flight> Flights { get; set; }
         Task GetFlights();
+        Task<ServiceResponse<Flight>> GetFlight(int flightNumber);
     }
 }

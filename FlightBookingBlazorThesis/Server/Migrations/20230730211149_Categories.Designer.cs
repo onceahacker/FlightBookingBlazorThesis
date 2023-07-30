@@ -3,6 +3,7 @@ using FlightBookingBlazorThesis.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlightBookingBlazorThesis.Server.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230730211149_Categories")]
+    partial class Categories
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -98,11 +101,11 @@ namespace FlightBookingBlazorThesis.Server.Migrations
                         new
                         {
                             Number = 1,
-                            CategoryId = 3,
+                            CategoryId = 1,
                             Destination = "Dubai",
                             Details = "Departuring from Budapest at 7:55 Arriving to Dubai at 13:30 Airlines: Fly emirates Duration: 5 hours and 35 mins",
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Emirates_logo.svg/800px-Emirates_logo.svg.png",
-                            Price = 450m
+                            Price = 64999m
                         },
                         new
                         {
@@ -111,7 +114,7 @@ namespace FlightBookingBlazorThesis.Server.Migrations
                             Destination = "Vienna",
                             Details = "Departuring from Budapest at 8:20 Arriving to Dubai at 10:00 Airlines: Wizz Air Duration: 1 hour and 40 mins",
                             ImageUrl = "https://wizzair.com/static/images/default-source/press-office/logos/logos-without-url/wizz_logo_1_cl_baa8bb65.jpg",
-                            Price = 34m
+                            Price = 8599m
                         },
                         new
                         {
@@ -120,34 +123,7 @@ namespace FlightBookingBlazorThesis.Server.Migrations
                             Destination = "Copenhagen",
                             Details = "Departuring from Budapest at 13:40 Arriving to Dubai at 15:50 Airlines: Wizz Air Duration: 2 hours and 10 mins",
                             ImageUrl = "https://wizzair.com/static/images/default-source/press-office/logos/logos-without-url/wizz_logo_1_cl_baa8bb65.jpg",
-                            Price = 80m
-                        },
-                        new
-                        {
-                            Number = 4,
-                            CategoryId = 1,
-                            Destination = "Amsterdam",
-                            Details = "Departuring from Budapest at 21:10 Arriving to Amsterdam at :0 Arlines: Wizz Air Duration: 2 hours and 10 mins",
-                            ImageUrl = "https://wizzair.com/static/images/default-source/press-office/logos/logos-without-url/wizz_logo_1_cl_baa8bb65.jpg",
-                            Price = 69m
-                        },
-                        new
-                        {
-                            Number = 5,
-                            CategoryId = 1,
-                            Destination = "Malmo",
-                            Details = "Departuring from Budapest at 3:45 Arriving to Dubai at 15:50 Airlines: Wizz Air Duration: 1 hours and 50 mins",
-                            ImageUrl = "https://wizzair.com/static/images/default-source/press-office/logos/logos-without-url/wizz_logo_1_cl_baa8bb65.jpg",
-                            Price = 39m
-                        },
-                        new
-                        {
-                            Number = 6,
-                            CategoryId = 2,
-                            Destination = "Amman",
-                            Details = "Departuring from Budapest at 3:45 Arriving to Dubai at 15:50 Airlines: Wizz Air Duration: 1 hours and 50 mins",
-                            ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Emirates_logo.svg/800px-Emirates_logo.svg.png",
-                            Price = 129m
+                            Price = 14999m
                         });
                 });
 
