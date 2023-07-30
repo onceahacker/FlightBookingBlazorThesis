@@ -2,6 +2,7 @@ global using FlightBookingBlazorThesis.Shared;
 global using Microsoft.EntityFrameworkCore;
 global using FlightBookingBlazorThesis.Server.Data;
 global using FlightBookingBlazorThesis.Server.Services.FlightService;
+global using FlightBookingBlazorThesis.Server.Services.CategoryService;
 using Microsoft.AspNetCore.ResponseCompression;
 
 
@@ -20,6 +21,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IFlightService, FlightService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 
 var app = builder.Build();

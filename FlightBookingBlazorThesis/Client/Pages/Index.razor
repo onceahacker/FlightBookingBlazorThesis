@@ -1,5 +1,17 @@
 ﻿@page "/"
+@page "/{categoryUrl}"
+@inject IFlightService FlightService
 
 <PageTitle>Blazor Flights</PageTitle>
 
 <FlightList />
+
+@code {
+    [Parameter]
+    public string? CategoryUrl { get; set; } = null;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await FlightService.GetFlights(CategoryUrl);
+    }
+}

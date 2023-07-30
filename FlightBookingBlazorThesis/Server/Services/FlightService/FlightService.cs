@@ -27,11 +27,23 @@
             return response;
         }
 
+
         public async Task<ServiceResponse<List<Flight>>> GetFlightsAsync()
         {
             var response = new ServiceResponse<List<Flight>>
             {
                 Data = await _context.Flights.ToListAsync()
+            };
+            return response;
+        }
+
+        public async Task<ServiceResponse<List<Flight>>> GetFlightsByCategory(string categoryUrl)
+        {
+            var response = new ServiceResponse<List<Flight>>
+            {
+                Data = await _context.Flights
+                    .Where(f => f.Category.Url.ToLower().Equals(categoryUrl.ToLower()))
+                    .ToListAsync()
             };
             return response;
         }
