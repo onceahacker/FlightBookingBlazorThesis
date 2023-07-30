@@ -9,18 +9,25 @@ namespace FlightBookingBlazorThesis.Server.Controllers
     [ApiController]
     public class FlightController : ControllerBase
     {
-        private readonly DataContext _context;
+        private readonly IFlightService _flightService;
 
-        public FlightController(DataContext context)
+        public FlightController(IFlightService flightService)
         {
-            _context = context;
+            _flightService = flightService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Flight>>> GetFlights() 
+        public async Task<ActionResult<ServiceResponse<List<Flight>>>> GetFlights() 
         {
-            var flights = await _context.Flights.ToListAsync();
-            return Ok(flights);
+            var result = await _flightService.GetFlightsAsync();
+            return Ok(result);
+        }
+
+        [HttpGet("{flightNumber}")]
+        public async Task<ActionResult<ServiceResponse<Flight>>> GetFlights(int flightNumber)
+        {
+            var result = await _flightService.GetFlightAsync(flightNumber);
+            return Ok(result);
         }
     }
 }

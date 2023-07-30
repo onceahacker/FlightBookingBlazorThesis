@@ -20,7 +20,7 @@ namespace FlightBookingBlazorThesis.Server.Migrations
                     Details = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
-                },
+                }, 
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Flights", x => x.Number);

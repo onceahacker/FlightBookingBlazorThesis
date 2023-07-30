@@ -1,16 +1,23 @@
-﻿@inject HttpClient Http
+﻿@inject IFlightService FlightService
 
-<u1 "class=list-unstyled">
-    @foreach (var flight in Flights)
+@if(FlightService.Flights == null || FlightService.Flights.Count == 0)
+{
+    <span> Loading Flights...</span>
+}
+else
+{
+
+<u1 class="list-unstyled">
+    @foreach (var flight in FlightService.Flights)
     {
         <li class="media my-3">
             <div class= "media-img_wrapper mr-2">
-                    <a href="#">
+                    <a href="/flight/@flight.Number">
                         <img class="media-img" src="@flight.ImageUrl" atl="@flight.Destination" />
                     </a>
                  </div>
                  <div class="media-body">
-                    <a href="#">
+                    <a href="/flight/@flight.Number">
                          <h4 class="mb-0">@flight.Destination</h4>
                     </a>
                 <p>@flight.Details</p>
@@ -22,15 +29,14 @@
     }
 
 </u1>
+}
 
 
 @code {
-    private static List<Flight> Flights { get; set; } = new List<Flight>();
+
 
     protected override async Task OnInitializedAsync()
     {
-        var result = await Http.GetFromJsonAsync<List<Flight>>("api/Flight");
-        if(result != null)
-        Flights = result;
+        await FlightService.GetFlights();
     }
 }
