@@ -22,8 +22,9 @@ else
                          <h4 class="mb-0">@flight.Destination</h4>
                     </a>
                 <p>@flight.Details</p>
+                    <p><strong>Departure Date:</strong> @flight.DepartureDate.ToShortDateString()</p>
                 <h5 class="price">
-                    €@flight.Price
+                    @GetPriceText(flight)
                 </h5>
             </div>
         </li>
@@ -44,5 +45,21 @@ else
     public void Dispose()
     {
         FlightService.FlightsChanged -= StateHasChanged;
+    }
+
+    private string GetPriceText(Flight flight)
+    {
+        var variants = flight.Variants;
+        if(variants.Count == 0)
+        {
+            return string.Empty;
+        }
+        else if (variants.Count == 1)
+        {
+            return $"${ variants[0].Price}";
+
+        }
+        decimal minPrice = variants.Min(v => v.Price);
+        return $"Starting at ${minPrice}";
     }
 }

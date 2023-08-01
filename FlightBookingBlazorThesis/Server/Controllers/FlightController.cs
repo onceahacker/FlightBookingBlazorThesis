@@ -36,5 +36,11 @@ namespace FlightBookingBlazorThesis.Server.Controllers
             var result = await _flightService.GetFlightsByCategory(categoryUrl);
             return Ok(result);
         }
+        [HttpGet("search/{searchText}")]
+        public async Task<ActionResult<ServiceResponse<List<Flight>>>> SearchFlights(string searchText)
+        {
+            var result = await _flightService.SearchFlights(searchText);
+            return Ok(result);
+        }
     }
 }
