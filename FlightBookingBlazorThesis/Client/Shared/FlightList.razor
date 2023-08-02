@@ -3,7 +3,7 @@
 
 @if(FlightService.Flights == null || FlightService.Flights.Count == 0)
 {
-    <span> Loading Flights...</span>
+    <span> @FlightService.Message</span>
 }
 else
 {

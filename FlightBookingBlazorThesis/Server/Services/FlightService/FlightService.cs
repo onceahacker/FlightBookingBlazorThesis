@@ -53,17 +53,52 @@
             return response;
         }
 
+        public async Task<ServiceResponse<List<string>>> GetFlightsSearchSuggestions(string searchText)
+        {
+            var flights = await FindFlightsBySearchText(searchText);
+
+            List<string> result = new List<string>();
+
+            foreach (var flight in flights)
+            {
+                if(flight.Destination.Contains(searchText, StringComparison.OrdinalIgnoreCase))
+                {
+                    result.Add(flight.Destination);
+                }
+               
+                if(flight.Details != null)
+                {
+                    var punctuation = flight.Details.Where(char.IsPunctuation).Distinct().ToArray();
+                    var words = flight.Details.Split().Select(w => w.Trim(punctuation));
+                    foreach (var word in words)
+                    {
+                        if(word.Contains(searchText, StringComparison.OrdinalIgnoreCase) && !result.Contains(word))
+                        {
+                            result.Add(word);
+
+                        }
+                    }
+                }
+            }
+            return new ServiceResponse<List<string>> { Data = result };
+        }
+
         public async Task<ServiceResponse<List<Flight>>> SearchFlights(string searchText)
         {
             var response = new ServiceResponse<List<Flight>>
             {
-                Data = await _context.Flights
-                    .Where(f => f.Destination.ToLower().Contains(searchText.ToLower())
-                    || f.Destination.ToLower().Contains(searchText.ToLower()))
-                    .Include(f => f.Variants)
-                    .ToListAsync()
+                Data = await FindFlightsBySearchText(searchText)
             };
             return response;
+        }
+
+        private async Task<List<Flight>> FindFlightsBySearchText(string searchText)
+        {
+            return await _context.Flights
+                                .Where(f => f.Destination.ToLower().Contains(searchText.ToLower())
+                                || f.Destination.ToLower().Contains(searchText.ToLower()))
+                                .Include(f => f.Variants)
+                                .ToListAsync();
         }
     }
 }

@@ -71,7 +71,7 @@ namespace FlightBookingBlazorThesis.Server.Data
                     Details = "Non-stop, Extra legroom",
                     ImageUrl = "https://www.thephoenix.ie/wp-content/uploads/2021/01/Ryanair-logo.png",
                     CategoryId = 1,
-                    DepartureDate = new DateTime(2023, 08, 25, 14, 30, 0)
+                    DepartureDate = new DateTime(2023, 08, 25, 14, 30, 0),
                 },
                 new Flight
                 {
@@ -79,7 +79,7 @@ namespace FlightBookingBlazorThesis.Server.Data
                      Destination = "Amsterdam",
                      Details = "Departuring from Budapest at 21:10 Arriving to Amsterdam at :0 Arlines: Wizz Air Duration: 2 hours and 10 mins",
                      ImageUrl = "https://wizzair.com/static/images/default-source/press-office/logos/logos-without-url/wizz_logo_1_cl_baa8bb65.jpg",
-                     CategoryId = 1
+                     CategoryId = 1,
                  },
                    new Flight
                    {

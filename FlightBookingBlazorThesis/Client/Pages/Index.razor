@@ -1,4 +1,5 @@
 ﻿@page "/"
+@page "/search/{searchText}"
 @page "/{categoryUrl}"
 @inject IFlightService FlightService
 
@@ -10,8 +11,16 @@
     [Parameter]
     public string? CategoryUrl { get; set; } = null;
 
+    [Parameter]
+    public string SearchText { get; set; } = null;
+
     protected override async Task OnParametersSetAsync()
     {
+        if(SearchText != null)
+        {
+            await FlightService.SearchFlights(SearchText);
+            return;
+        }
         await FlightService.GetFlights(CategoryUrl);
     }
 }

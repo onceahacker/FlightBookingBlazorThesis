@@ -6,6 +6,7 @@ global using FlightBookingBlazorThesis.Server.Services.CategoryService;
 using Microsoft.AspNetCore.ResponseCompression;
 
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -22,6 +23,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IFlightService, FlightService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+
 
 
 var app = builder.Build();

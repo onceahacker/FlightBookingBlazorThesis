@@ -40,7 +40,7 @@ namespace FlightBookingBlazorThesis.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
 
                     b.HasData(
                         new
@@ -93,7 +93,7 @@ namespace FlightBookingBlazorThesis.Server.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Flights");
+                    b.ToTable("Flights", (string)null);
 
                     b.HasData(
                         new
@@ -166,7 +166,7 @@ namespace FlightBookingBlazorThesis.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("FlightTypes");
+                    b.ToTable("FlightTypes", (string)null);
 
                     b.HasData(
                         new
@@ -204,7 +204,7 @@ namespace FlightBookingBlazorThesis.Server.Migrations
 
                     b.HasIndex("FlightTypeId");
 
-                    b.ToTable("FlightVariants");
+                    b.ToTable("FlightVariants", (string)null);
 
                     b.HasData(
                         new
