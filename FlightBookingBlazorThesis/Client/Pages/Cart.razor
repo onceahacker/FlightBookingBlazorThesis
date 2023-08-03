@@ -1,5 +1,79 @@
-﻿<h3>Cart</h3>
+﻿@page "/cart"
+@inject ICartService CartService
+
+<PageTitle>Summary</PageTitle>
+
+<h3>Summary</h3>
+
+@if (cartFlights == null || cartFlights.Count == 0)
+{
+    <span>@message</span>
+}
+else
+{
+    <div>
+        @foreach (var flight in cartFlights)
+        {
+            <div class="container">
+                <div class="image-wrapper">
+                    <img src="@flight.ImageUrl" class="image" />
+                </div>
+                <div class="name">
+                    <h5><a href="/flight/@flight.FlightId">@flight.Destination</a></h5>
+                    <span>@flight.FlightType</span><br />
+                    <input type="number" value="@flight.Quantity"
+                    @onchange="@((ChangeEventArgs e) => UpdateQuantity(e, flight))"
+                           class="form-control input-quantity"
+                           min="1" />
+                    <button class="btn-delete" @onclick="@(() =>
+                        RemoveFlightFromCart(flight.FlightId, flight.FlightTypeId))">
+                        Delete
+                    </button>
+                </div>
+                <div class="cart-flight-price">$@(flight.Price * flight.Quantity)</div>
+            </div>
+        }
+        <div class="cart-flight-price">
+            Total (@cartFlights.Count): $@cartFlights.Sum(flight => @flight.Price * flight.Quantity)
+        </div>
+    </div>
+}
+
+
 
 @code {
+    List<CartFlightResponse> cartFlights = null;
+    string message = "Loading your plan...";
 
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadCart();
+    }
+
+    private async Task RemoveFlightFromCart(int flightId, int flightTypeId)
+    {
+        await CartService.RemoveFlightFromCart(flightId, flightTypeId);
+        await LoadCart();
+    }
+
+    private async Task LoadCart()
+    {
+        if ((await CartService.GetCartItems()).Count == 0)
+        {
+            message = "No chosen flight.";
+            cartFlights = new List<CartFlightResponse>();
+        }
+        else
+        {
+            cartFlights = await CartService.GetCartFlights();
+        }
+    }
+
+    private async Task UpdateQuantity(ChangeEventArgs e, CartFlightResponse flight)
+    {
+        flight.Quantity = int.Parse(e.Value.ToString());
+        if (flight.Quantity < 1)
+            flight.Quantity = 1;
+        await CartService.UpdateQuantity(flight);
+    }
 }

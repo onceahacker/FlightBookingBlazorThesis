@@ -1,5 +1,6 @@
 ﻿@page "/flight/{Number:int}"
 @inject IFlightService FlightService
+@inject ICartService CartService
 
 @if(flight == null)
 {
@@ -38,6 +39,9 @@ else
                     $@GetSelectedVariant().Price
                 </h4>
             }
+            <button class="btn btn-primary" @onclick="AddToCart" >
+                <i class="oi oi-cart"></i>&nbsp;&nbsp;&nbsp;Add to Cart
+            </button>
         </div>
      </div>
 
@@ -72,5 +76,17 @@ else
     {
         var variant = flight.Variants.FirstOrDefault(v => v.FlightTypeId == currentTypeId);
         return variant;
+    }
+
+    private async Task AddToCart()
+    {
+        var flightVariant = GetSelectedVariant();
+        var cartItem = new CartItem
+            {
+                FlightId = flightVariant.FlightId,
+                FlightTypeId = flightVariant.FlightTypeId
+            };
+
+        await CartService.AddToCart(cartItem);
     }
 }
