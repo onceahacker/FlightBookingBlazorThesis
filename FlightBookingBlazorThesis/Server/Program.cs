@@ -4,6 +4,7 @@ global using FlightBookingBlazorThesis.Server.Data;
 global using FlightBookingBlazorThesis.Server.Services.FlightService;
 global using FlightBookingBlazorThesis.Server.Services.CategoryService;
 global using FlightBookingBlazorThesis.Server.Services.CartService;
+global using FlightBookingBlazorThesis.Server.Services.AuthService;
 using Microsoft.AspNetCore.ResponseCompression;
 
 
@@ -25,6 +26,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IFlightService, FlightService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICartService, CartService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 
 

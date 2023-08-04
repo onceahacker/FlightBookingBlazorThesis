@@ -2,6 +2,7 @@ global using FlightBookingBlazorThesis.Shared;
 global using System.Net.Http.Json;
 global using FlightBookingBlazorThesis.Client.Services.FlightService;
 global using FlightBookingBlazorThesis.Client.Services.CategoryService;
+global using FlightBookingBlazorThesis.Client.Services.AuthService;
 using FlightBookingBlazorThesis.Client;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -17,5 +18,7 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 builder.Services.AddScoped<IFlightService, FlightService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICartService, CartService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+
 
 await builder.Build().RunAsync();
