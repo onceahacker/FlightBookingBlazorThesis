@@ -3,6 +3,7 @@ global using System.Net.Http.Json;
 global using FlightBookingBlazorThesis.Client.Services.FlightService;
 global using FlightBookingBlazorThesis.Client.Services.CategoryService;
 global using FlightBookingBlazorThesis.Client.Services.AuthService;
+global using Microsoft.AspNetCore.Components.Authorization;
 using FlightBookingBlazorThesis.Client;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -19,6 +20,9 @@ builder.Services.AddScoped<IFlightService, FlightService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddOptions();
+builder.Services.AddAuthorizationCore();
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 
 
 await builder.Build().RunAsync();
