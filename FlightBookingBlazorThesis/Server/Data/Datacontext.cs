@@ -167,6 +167,8 @@ namespace FlightBookingBlazorThesis.Server.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<FlightType> FlightTypes { get; set; }
         public DbSet<FlightVariant> FlightVariants { get; set; }
+        public DbSet<User> Users { get; set; }
+
 
 
     }
