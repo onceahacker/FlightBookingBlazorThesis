@@ -1,5 +1,7 @@
 ﻿@page "/cart"
 @inject ICartService CartService
+@inject IOrderService OrderService
+
 
 <PageTitle>Summary</PageTitle>
 
@@ -8,6 +10,10 @@
 @if (cartFlights == null || cartFlights.Count == 0)
 {
     <span>@message</span>
+}
+else if (orderPlaced)
+{
+    <span>Thank you for your Booking! You can check your Reservation here <a href="Reservation">here</a>.</span>
 }
 else
 {
@@ -37,6 +43,8 @@ else
             Total (@cartFlights.Count): $@cartFlights.Sum(flight => @flight.Price * flight.Quantity)
         </div>
     </div>
+    <button @onclick="PlaceOrder" class="btn alert-success float-end mt-1">Place Order</button>
+
 }
 
 
@@ -44,9 +52,13 @@ else
 @code {
     List<CartFlightResponse> cartFlights = null;
     string message = "Loading your plan...";
+    bool orderPlaced = false;
+
 
     protected override async Task OnInitializedAsync()
     {
+        orderPlaced = false;
+
         await LoadCart();
     }
 
@@ -58,14 +70,11 @@ else
 
     private async Task LoadCart()
     {
-        if ((await CartService.GetCartItems()).Count == 0)
+        await CartService.GetCartItemsCount();
+        cartFlights = await CartService.GetCartFlights();
+        if (cartFlights == null || cartFlights.Count == 0)
         {
             message = "No chosen flight.";
-            cartFlights = new List<CartFlightResponse>();
-        }
-        else
-        {
-            cartFlights = await CartService.GetCartFlights();
         }
     }
 
@@ -75,5 +84,12 @@ else
         if (flight.Quantity < 1)
             flight.Quantity = 1;
         await CartService.UpdateQuantity(flight);
+    }
+
+    private async Task PlaceOrder()
+    {
+        await OrderService.PlaceOrder();
+        await CartService.GetCartItemsCount();
+        orderPlaced = true;
     }
 }

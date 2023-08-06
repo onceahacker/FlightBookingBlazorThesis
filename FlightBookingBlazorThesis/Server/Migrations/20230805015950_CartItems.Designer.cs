@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlightBookingBlazorThesis.Server.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230804220750_Users")]
-    partial class Users
+    [Migration("20230805015950_CartItems")]
+    partial class CartItems
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,25 @@ namespace FlightBookingBlazorThesis.Server.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("FlightBookingBlazorThesis.Shared.CartItem", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FlightId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FlightTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "FlightId", "FlightTypeId");
+
+                    b.ToTable("CartItems");
+                });
 
             modelBuilder.Entity("FlightBookingBlazorThesis.Shared.Category", b =>
                 {

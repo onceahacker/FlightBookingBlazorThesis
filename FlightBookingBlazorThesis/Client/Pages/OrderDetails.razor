@@ -1,0 +1,43 @@
+﻿@page "/orders/{orderId:int}"
+@inject IOrderService OrderService
+
+@if (order == null)
+{
+    <span>Loading booking...</span>
+}
+else
+{
+    <h3>Order from @order.OrderDate</h3>
+
+    <div>
+        @foreach (var flight in order.Flights)
+        {
+            <div class="container">
+                <div class="image-wrapper">
+                    <img src="@flight.ImageUrl" class="image" />
+                </div>
+                <div class="name">
+                    <h5><a href="/flight/@flight.FlightId">@flight.Destination</a></h5>
+                    <span>@flight.FlightType</span><br />
+                    <span>Quantity: @flight.Quantity</span>
+                </div>
+                <div class="flight-price">$@flight.TotalPrice</div>
+            </div>
+        }
+        <div class="flight-price">
+            Total: $@order.TotalPrice
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int OrderId { get; set; }
+
+    OrderDetailsResponse order = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        order = await OrderService.GetOrderDetails(OrderId);
+    }
+}

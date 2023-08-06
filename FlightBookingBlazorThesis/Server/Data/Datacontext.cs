@@ -11,8 +11,15 @@ namespace FlightBookingBlazorThesis.Server.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            modelBuilder.Entity<CartItem>()
+        .HasKey(ci => new { ci.UserId, ci.FlightId, ci.FlightTypeId });
+
             modelBuilder.Entity<FlightVariant>()
                 .HasKey(f => new { f.FlightId, f.FlightTypeId });
+
+            modelBuilder.Entity<OrderItem>()
+               .HasKey(oi => new { oi.OrderId, oi.FlightId, oi.FlightTypeId });
 
             modelBuilder.Entity<FlightType>().HasData(
                 new FlightType { Id = 1, Name = "One Way"},
@@ -168,6 +175,11 @@ namespace FlightBookingBlazorThesis.Server.Data
         public DbSet<FlightType> FlightTypes { get; set; }
         public DbSet<FlightVariant> FlightVariants { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<CartItem> CartItems { get; set; }
+
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+
 
 
 

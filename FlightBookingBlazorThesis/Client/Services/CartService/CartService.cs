@@ -6,91 +6,161 @@ namespace FlightBookingBlazorThesis.Client.Services.NewFolder
     {
         private readonly ILocalStorageService _localStorage;
         private readonly HttpClient _http;
+        private readonly IAuthService _authService;
 
-        public CartService (ILocalStorageService localStorage, HttpClient http)
+
+        public CartService(ILocalStorageService localStorage, HttpClient http,
+            IAuthService authService)
         {
             _localStorage = localStorage;
             _http = http;
+            _authService = authService;
+
         }
 
         public event Action OnChange;
 
         public async Task AddToCart(CartItem cartItem)
         {
-            var cart = await _localStorage.GetItemAsync<List<CartItem>>("cart");
-            if (cart == null)
+            if (await _authService.IsUserAuthenticated())
             {
-                cart = new List<CartItem>();
-            }
-
-            var sameItem = cart.Find(x => x.FlightId == cartItem.FlightId &&
-                x.FlightTypeId == cartItem.FlightTypeId);
-            if (sameItem == null)
-            {
-                cart.Add(cartItem);
+                await _http.PostAsJsonAsync("api/cart/add", cartItem);
             }
             else
             {
-                sameItem.Quantity += cartItem.Quantity;
-            }
+                var cart = await _localStorage.GetItemAsync<List<CartItem>>("cart");
+                if (cart == null)
+                {
+                    cart = new List<CartItem>();
+                }
 
-            await _localStorage.SetItemAsync("cart", cart);
-            OnChange.Invoke();
+                var sameItem = cart.Find(x => x.FlightId == cartItem.FlightId &&
+                    x.FlightTypeId == cartItem.FlightTypeId);
+                if (sameItem == null)
+                {
+                    cart.Add(cartItem);
+                }
+                else
+                {
+                    sameItem.Quantity += cartItem.Quantity;
+                }
+
+                await _localStorage.SetItemAsync("cart", cart);
+            }
+            await GetCartItemsCount();
         }
 
-        public async Task<List<CartItem>> GetCartItems()
+        public async Task GetCartItemsCount()
         {
-            var cart = await _localStorage.GetItemAsync<List<CartItem>>("cart");
-            if (cart == null)
+            if (await _authService.IsUserAuthenticated())
             {
-                cart = new List<CartItem>();
+                var result = await _http.GetFromJsonAsync<ServiceResponse<int>>("api/cart/count");
+                var count = result.Data;
+
+                await _localStorage.SetItemAsync<int>("cartItemsCount", count);
+            }
+            else
+            {
+                var cart = await _localStorage.GetItemAsync<List<CartItem>>("cart");
+                await _localStorage.SetItemAsync<int>("cartItemsCount", cart != null ? cart.Count : 0);
             }
 
-            return cart;
+            OnChange.Invoke();
         }
 
         public async Task<List<CartFlightResponse>> GetCartFlights()
         {
-            var cartItems = await _localStorage.GetItemAsync<List<CartItem>>("cart");
-            var response = await _http.PostAsJsonAsync("api/cart/flights", cartItems);
-            var cartFlights =
-                await response.Content.ReadFromJsonAsync<ServiceResponse<List<CartFlightResponse>>>();
-            return cartFlights.Data;
+            if (await _authService.IsUserAuthenticated())
+            {
+                var response = await _http.GetFromJsonAsync<ServiceResponse<List<CartFlightResponse>>>("api/cart");
+                return response.Data;
+            }
+            else
+            {
+                var cartItems = await _localStorage.GetItemAsync<List<CartItem>>("cart");
+                if (cartItems == null)
+                    return new List<CartFlightResponse>();
+                var response = await _http.PostAsJsonAsync("api/cart/flights", cartItems);
+                var cartFlights =
+                    await response.Content.ReadFromJsonAsync<ServiceResponse<List<CartFlightResponse>>>();
+                return cartFlights.Data;
+            }
+
         }
 
         public async Task RemoveFlightFromCart(int flightId, int flightTypeId)
         {
-            var cart = await _localStorage.GetItemAsync<List<CartItem>>("cart");
-            if (cart == null)
+            if (await _authService.IsUserAuthenticated())
+            {
+                await _http.DeleteAsync($"api/cart/{flightId}/{flightTypeId}");
+            }
+            else
+            {
+                var cart = await _localStorage.GetItemAsync<List<CartItem>>("cart");
+                if (cart == null)
+                {
+                    return;
+                }
+
+                var cartItem = cart.Find(x => x.FlightId == flightId
+                    && x.FlightTypeId == flightTypeId);
+                if (cartItem != null)
+                {
+                    cart.Remove(cartItem);
+                    await _localStorage.SetItemAsync("cart", cart);
+                }
+            }
+        }
+
+        public async Task StoreCartItems(bool emptyLocalCart = false)
+        {
+            var localCart = await _localStorage.GetItemAsync<List<CartItem>>("cart");
+            if (localCart == null)
             {
                 return;
             }
 
-            var cartItem = cart.Find(x => x.FlightId == flightId
-                && x.FlightTypeId == flightTypeId);
-            if (cartItem != null)
+            await _http.PostAsJsonAsync("api/cart", localCart);
+
+            if (emptyLocalCart)
             {
-                cart.Remove(cartItem);
-                await _localStorage.SetItemAsync("cart", cart);
-                OnChange.Invoke();
+                await _localStorage.RemoveItemAsync("cart");
+
             }
         }
 
         public async Task UpdateQuantity(CartFlightResponse flight)
         {
-            var cart = await _localStorage.GetItemAsync<List<CartItem>>("cart");
-            if (cart == null)
+            if (await _authService.IsUserAuthenticated())
+
             {
-                return;
+                var request = new CartItem
+                {
+                    FlightId = flight.FlightId,
+                    Quantity = flight.Quantity,
+                    FlightTypeId = flight.FlightTypeId
+                };
+                await _http.PutAsJsonAsync("api/cart/update-quantity", request);
             }
 
-            var cartItem = cart.Find(x => x.FlightId == flight.FlightId
-                && x.FlightTypeId == flight.FlightTypeId);
-            if (cartItem != null)
+            else
             {
-                cartItem.Quantity = flight.Quantity;
-                await _localStorage.SetItemAsync("cart", cart);
+                var cart = await _localStorage.GetItemAsync<List<CartItem>>("cart");
+                if (cart == null)
+                {
+                    return;
+                }
+
+                var cartItem = cart.Find(x => x.FlightId == flight.FlightId
+                    && x.FlightTypeId == flight.FlightTypeId);
+                if (cartItem != null)
+                {
+                    cartItem.Quantity = flight.Quantity;
+                    await _localStorage.SetItemAsync("cart", cart);
+                }
             }
         }
+
     }
 }
+    

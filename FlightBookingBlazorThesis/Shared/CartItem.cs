@@ -8,6 +8,8 @@ namespace FlightBookingBlazorThesis.Shared
 {
     public class CartItem
     {
+        public int UserId { get; set; }
+
         public int FlightId { get; set; }
         public int FlightTypeId { get; set; }
         public int Quantity { get; set; } = 1;

@@ -5,6 +5,7 @@ global using FlightBookingBlazorThesis.Server.Services.FlightService;
 global using FlightBookingBlazorThesis.Server.Services.CategoryService;
 global using FlightBookingBlazorThesis.Server.Services.CartService;
 global using FlightBookingBlazorThesis.Server.Services.AuthService;
+global using FlightBookingBlazorThesis.Server.Services.OrderService;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -29,6 +30,7 @@ builder.Services.AddScoped<IFlightService, FlightService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -43,6 +45,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+builder.Services.AddHttpContextAccessor();
 
 
 var app = builder.Build();
