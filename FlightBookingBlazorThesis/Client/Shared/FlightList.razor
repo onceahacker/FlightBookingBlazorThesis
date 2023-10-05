@@ -1,17 +1,31 @@
 ﻿@inject IFlightService FlightService
 @implements IDisposable
 
-<div class="filter-section container mt-1 bg-light p-4 rounded">
-    <div class="row gy-3 align-items-center">
-        <div class="col-md-3">
+@* <div class="filter-section container mt-1 bg-light p-4 rounded">
+    <div class="row gy-2 align-items-center">
+        <div class="col-md-2">
             <div class="input-group">
                 <input type="text" class="form-control" @bind="filterDepartureCity" placeholder="Departure City" aria-label="Departure City" aria-describedby="inputGroupPrepend1">
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="input-group">
                 <input type="text" class="form-control" @bind="filterDestinationCity" placeholder="Destination City" aria-label="Destination City" aria-describedby="inputGroupPrepend2">
             </div>
+        </div>
+        <!-- Departure Date and Time -->
+        <div class="col-md-2">
+            <input type="date" class="form-control" @bind="filterDepartureDate" placeholder="Departure Date">
+        </div>
+        <div class="col-md-2">
+            <input type="time" class="form-control" @bind="filterDepartureTime" placeholder="Departure Time">
+        </div>
+
+        <div class="col-md-2">
+            <input type="date" class="form-control" @bind="filterArrivalDate" placeholder="Arrival Date">
+        </div>
+        <div class="col-md-2">
+            <input type="time" class="form-control" @bind="filterArrivalTime" placeholder="Arrival Time">
         </div>
         <div class="col-md-4">
             <div class="d-flex justify-content-between align-items-center">
@@ -23,6 +37,151 @@
             <button class="btn btn-primary w-100" @onclick="ApplyFilters">Apply Filters</button>
         </div>
     </div>
+</div> *@
+@* <div class="filter-section container mt-4 bg-light p-4 rounded">
+    <div class="row gy-2 align-items-center">
+
+        <!-- Departure City -->
+        <div class="col-md-2 mb-2">
+            <label for="departureCity">Departure City</label>
+            <input type="text" id="departureCity" class="form-control" @bind="filterDepartureCity" placeholder="Enter city">
+        </div>
+
+        <!-- Destination City -->
+        <div class="col-md-2 mb-2">
+            <label for="destinationCity">Destination City</label>
+            <input type="text" id="destinationCity" class="form-control" @bind="filterDestinationCity" placeholder="Enter city">
+        </div>
+
+        <!-- Departure Date and Time -->
+        <div class="col-md-2 mb-2">
+            <label for="departureDate">Departure Date</label>
+            <input type="date" id="departureDate" class="form-control" @bind="filterDepartureDate">
+        </div>
+        <div class="col-md-2 mb-2">
+            <label for="departureTime">Time</label>
+            <input type="time" id="departureTime" class="form-control" @bind="filterDepartureTime">
+        </div>
+
+        <!-- Arrival Date and Time -->
+        <div class="col-md-2 mb-2">
+            <label for="arrivalDate">Arrival Date</label>
+            <input type="date" id="arrivalDate" class="form-control" @bind="filterArrivalDate">
+        </div>
+        <div class="col-md-2 mb-2">
+            <label for="arrivalTime">Time</label>
+            <input type="time" id="arrivalTime" class="form-control" @bind="filterArrivalTime">
+        </div>
+
+        <!-- Price Range -->
+        <div class="col-md-4 mt-2">
+            <label for="priceRange">Price Range: <strong>$@maxPrice</strong></label>
+            <input type="range" min="0" max="1000" class="form-range" id="priceRange" @bind="maxPrice">
+        </div>
+
+        <!-- Filter Button -->
+        <div class="col-md-2 mt-2">
+            <button class="btn btn-primary w-100" @onclick="ApplyFilters">Apply Filters</button>
+        </div>
+    </div>
+</div>
+ *@
+@* <div class="filter-section container mt-4 bg-light p-4 rounded">
+    <div class="row gy-3 align-items-start">
+
+        <!-- Departure Group -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">Departure</div>
+                <div class="card-body">
+                    <div class="mb-2">
+                        <label for="departureCity">City</label>
+                        <input type="text" id="departureCity" class="form-control" @bind="filterDepartureCity" placeholder="Enter city">
+                    </div>
+                    <div class="mb-2">
+                        <label for="departureDate">Date</label>
+                        <input type="date" id="departureDate" class="form-control" @bind="filterDepartureDate">
+                    </div>
+                    <div>
+                        <label for="departureTime">Time</label>
+                        <input type="time" id="departureTime" class="form-control" @bind="filterDepartureTime">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Arrival Group -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">Arrival</div>
+                <div class="card-body">
+                    <div class="mb-2">
+                        <label for="destinationCity">City</label>
+                        <input type="text" id="destinationCity" class="form-control" @bind="filterDestinationCity" placeholder="Enter city">
+                    </div>
+                    <div class="mb-2">
+                        <label for="arrivalDate">Date</label>
+                        <input type="date" id="arrivalDate" class="form-control" @bind="filterArrivalDate">
+                    </div>
+                    <div>
+                        <label for="arrivalTime">Time</label>
+                        <input type="time" id="arrivalTime" class="form-control" @bind="filterArrivalTime">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Price Range -->
+        <div class="col-md-10 mt-2">
+            <label for="priceRange">Price Range: <strong>$@maxPrice</strong></label>
+            <input type="range" min="0" max="1000" class="form-range" id="priceRange" @bind="maxPrice">
+        </div>
+
+        <!-- Filter Button -->
+        <div class="col-md-2 mt-2">
+            <button class="btn btn-primary w-100" @onclick="ApplyFilters">Apply Filters</button>
+        </div>
+    </div>
+</div>
+ *@
+<div class="filter-section container mt-1 bg-light p-4 rounded">
+    <div class="row gy-3 align-items-start">
+
+        <!-- Departure City -->
+        <div class="col-md-3 mb-2">
+            <label for="departureCity">Departure City</label>
+            <input type="text" id="departureCity" class="form-control" @bind="filterDepartureCity" placeholder="Enter city">
+        </div>
+
+        <!-- Departure Date & Time -->
+        <div class="col-md-3 mb-2">
+            <label for="departureDateTime">Departure Date & Time</label>
+            <input type="datetime-local" id="departureDateTime" class="form-control" @bind="filterDepartureDateTime">
+        </div>
+
+        <!-- Destination City -->
+        <div class="col-md-3 mb-2">
+            <label for="destinationCity">Destination City</label>
+            <input type="text" id="destinationCity" class="form-control" @bind="filterDestinationCity" placeholder="Enter city">
+        </div>
+
+        <!-- Arrival Date & Time -->
+        <div class="col-md-3 mb-2">
+            <label for="arrivalDateTime">Arrival Date & Time</label>
+            <input type="datetime-local" id="arrivalDateTime" class="form-control" @bind="filterArrivalDateTime">
+        </div>
+
+        <!-- Price Range -->
+        <div class="col-md-10 mt-2 ">
+            <label for="priceRange">Price Range: <strong>$@maxPrice</strong></label>
+            <input type="range" min="0" max="1000" class="form-range" id="priceRange" @bind="maxPrice">
+        </div>
+
+        <!-- Filter Button -->
+        <div class="col-md-2 mt-4 ">
+            <button class="btn btn-primary w-100" @onclick="ApplyFilters">Apply Filters</button>
+        </div>
+    </div>
 </div>
 
 @if (FlightService.Flights == null || !FilteredFlights.Any())
@@ -31,30 +190,39 @@
 }
 else
 {
-
-
-    <ul class="list-unstyled">
+    <ul class="list-group">
         @foreach (var flight in FilteredFlights)
         {
-            <li class="media my-3 border rounded p-3 bg-light">
-                <div class="media-img_wrapper mr-3 pe-3 d-flex align-items-center">
-                    <!-- added pe-3 here -->
-                    <a href="/flight/@flight.Number">
-                        <img class="media-img img-fluid" src="@flight.ImageUrl" alt="@flight.Destination" style="max-width: 150px;" />
-                    </a>
-                </div>
-                <div class="media-body pl">
-                    <a href="/flight/@flight.Number" class="text-dark text-decoration-none">
-                        <h4 class="mb-1">@flight.DepartureCity > @flight.Destination</h4>
-                    </a>
-                    <p class="text-muted">@flight.Details</p>
-                    <p>
-                        <span class="text-primary font-weight-bold">Departure:</span> @flight.DepartureDate.ToString("dd-MM-yyyy HH:mm:ss") <br />
-                        <span class="text-success font-weight-bold">Arrival:</span> @flight.ArrivalDate.ToString("dd-MM-yyyy HH:mm:ss")
-                    </p>
-                    <h5 class="price text-danger font-weight-bold">
-                        @GetPriceText(flight)
-                    </h5>
+            <li class="list-group-item my-3 border rounded shadow-sm">
+                <div class="row">
+                    <!-- Flight Image -->
+                    <div class="col-md-2 d-flex align-items-center justify-content-center">
+                        <a href="/flight/@flight.Number">
+                            <img class="img-fluid flight-image" src="@flight.ImageUrl" alt="@flight.Destination">
+                        </a>
+                    </div>
+
+                    <!-- Flight Details -->
+                    <div class="col-md-8">
+                        <a href="/flight/@flight.Number" class="text-dark text-decoration-none">
+                            <h4 class="mb-2">@flight.DepartureCity > @flight.Destination</h4>
+                        </a>
+                        <p class="text-muted mb-1">@flight.Details</p>
+                        <p class="mb-1">
+                            <span class="text-primary font-weight-bold">Departure:</span> @flight.DepartureDate.ToString("MM/dd/yyyy hh:mm tt")
+                        </p>
+                        <p>
+                            <span class="text-success font-weight-bold">Arrival:</span> @flight.ArrivalDate.ToString("MM/dd/yyyy hh:mm tt")
+                        </p>
+                    </div>
+
+                    <!-- Price Details -->
+                    <div class="col-md-2 d-flex flex-column justify-content-center align-items-end">
+                        <h5 class="price text-danger font-weight-bold mb-1">
+                            @GetPriceText(flight)
+                        </h5>
+                        <a href="/flight/@flight.Number" class="btn btn-primary btn-sm mt-2">View Details</a>
+                    </div>
                 </div>
             </li>
         }
@@ -64,9 +232,14 @@ else
 
 
 @code {
-
+    private DateTime? filterDepartureDateTime;
+    private DateTime? filterArrivalDateTime;
     private string filterDepartureCity = string.Empty;
     private string filterDestinationCity = string.Empty;
+    private DateTime? filterDepartureDate;
+    private TimeOnly? filterDepartureTime;
+    private DateTime? filterArrivalDate;
+    private TimeOnly? filterArrivalTime;
     private decimal maxPrice = 1000;
 
     protected override void OnInitialized()
@@ -96,10 +269,13 @@ else
     }
 
     private IEnumerable<Flight> FilteredFlights => FlightService.Flights.Where(f =>
-        (string.IsNullOrEmpty(filterDepartureCity) || f.DepartureCity.Contains(filterDepartureCity, StringComparison.OrdinalIgnoreCase)) &&
-        (string.IsNullOrEmpty(filterDestinationCity) || f.Destination.Contains(filterDestinationCity, StringComparison.OrdinalIgnoreCase)) &&
-        GetMinPrice(f) <= maxPrice
-    );
+     (string.IsNullOrEmpty(filterDepartureCity) || f.DepartureCity.Contains(filterDepartureCity, StringComparison.OrdinalIgnoreCase)) &&
+     (string.IsNullOrEmpty(filterDestinationCity) || f.Destination.Contains(filterDestinationCity, StringComparison.OrdinalIgnoreCase)) &&
+     (!filterDepartureDateTime.HasValue || f.DepartureDate == filterDepartureDateTime.Value) &&
+     (!filterArrivalDateTime.HasValue || f.ArrivalDate == filterArrivalDateTime.Value) &&
+     GetMinPrice(f) <= maxPrice
+     );
+
 
     private decimal GetMinPrice(Flight flight)
     {

@@ -61,3 +61,10 @@
 .price {
     font-size: 1.1rem; /* Adjust according to preference */
 }
+.flight-image {
+    width: 140px; /* set a specific width */
+    height: 100px; /* set a specific height */
+    object-fit: contain; /* ensures that the image retains its aspect ratio */
+    display: block; /* to remove bottom space/line that sometimes appear under images */
+    margin: auto; /* to center the image in its container */
+}

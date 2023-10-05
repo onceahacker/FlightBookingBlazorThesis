@@ -4,9 +4,6 @@
 
 
 <PageTitle>Summary</PageTitle>
-
-<h3>Summary</h3>
-
 @if (cartFlights == null || cartFlights.Count == 0)
 {
     <span>@message</span>
@@ -17,33 +14,46 @@ else if (orderPlaced)
 }
 else
 {
-    <div>
+    <div class="container mt-2">
+        <h2 class="mb-4">Summary</h2>
+
         @foreach (var flight in cartFlights)
         {
-            <div class="container">
-                <div class="image-wrapper">
-                    <img src="@flight.ImageUrl" class="image" />
+            <div class="card mb-4">
+                <!-- Airline Logo & Flight Details -->
+                <div class="row card-body align-items-center">
+                    <div class="col-md-2 text-center">
+                        <img src="@flight.ImageUrl" class="img-fluid flight-image" alt="@flight.Destination">
+                    </div>
+                    <div class="col-md-4">
+                        <h5 class="card-title"><a href="/flight/@flight.FlightId" class="text-dark text-decoration-none">@flight.Destination</a></h5>
+                        <span class="card-subtitle d-block mb-2 text-muted">@flight.FlightType</span>
+                    </div>
+                    <div class="col-md-1">
+                        <input type="number" value="@flight.Quantity"
+                        @onchange="@((ChangeEventArgs e) => UpdateQuantity(e, flight))"
+                               class="form-control input-quantity"
+                               min="1" />
+                    </div>
+                    <div class="col-md-2">
+                        <h6 class="card-text text-danger">$@(flight.Price * flight.Quantity)</h6>
+                    </div>
+                    <div class="col-md-1 text-end">
+                        <button class="btn btn-danger" @onclick="@(() => RemoveFlightFromCart(flight.FlightId, flight.FlightTypeId))">Delete</button>
+                    </div>
                 </div>
-                <div class="name">
-                    <h5><a href="/flight/@flight.FlightId">@flight.Destination</a></h5>
-                    <span>@flight.FlightType</span><br />
-                    <input type="number" value="@flight.Quantity"
-                    @onchange="@((ChangeEventArgs e) => UpdateQuantity(e, flight))"
-                           class="form-control input-quantity"
-                           min="1" />
-                    <button class="btn-delete" @onclick="@(() =>
-                        RemoveFlightFromCart(flight.FlightId, flight.FlightTypeId))">
-                        Delete
-                    </button>
-                </div>
-                <div class="cart-flight-price">$@(flight.Price * flight.Quantity)</div>
             </div>
         }
-        <div class="cart-flight-price">
-            Total (@cartFlights.Count): $@cartFlights.Sum(flight => @flight.Price * flight.Quantity)
+
+        <!-- Cart Total & Place Order -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h5>Total Items: @cartFlights.Count</h5>
+                <h4>Total: $@cartFlights.Sum(flight => flight.Price * flight.Quantity)</h4>
+            </div>
+            <button @onclick="PlaceOrder" class="btn btn-success btn-lg">Place Order</button>
         </div>
     </div>
-    <button @onclick="PlaceOrder" class="btn alert-success float-end mt-1">Place Order</button>
 
 }
 

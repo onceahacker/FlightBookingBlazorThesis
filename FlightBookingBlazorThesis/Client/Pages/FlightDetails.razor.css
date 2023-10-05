@@ -31,3 +31,9 @@
         height: auto;
     }
 }
+.flight-card-image {
+    height: 200px; /* Adjust this value as required */
+    object-fit: contain; /* To make sure the image covers the div without stretching */
+    width: 100%; /* To ensure the image takes up the full width of its container */
+}
+
