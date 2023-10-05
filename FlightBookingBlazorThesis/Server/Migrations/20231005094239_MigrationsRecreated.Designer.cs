@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlightBookingBlazorThesis.Server.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230805015950_CartItems")]
-    partial class CartItems
+    [Migration("20231005094239_MigrationsRecreated")]
+    partial class MigrationsRecreated
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -93,8 +93,15 @@ namespace FlightBookingBlazorThesis.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Number"));
 
+                    b.Property<DateTime>("ArrivalDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
+
+                    b.Property<string>("DepartureCity")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DepartureDate")
                         .HasColumnType("datetime2");
@@ -121,7 +128,9 @@ namespace FlightBookingBlazorThesis.Server.Migrations
                         new
                         {
                             Number = 1,
+                            ArrivalDate = new DateTime(2023, 8, 15, 9, 55, 0, 0, DateTimeKind.Unspecified),
                             CategoryId = 3,
+                            DepartureCity = "Islamabad",
                             DepartureDate = new DateTime(2023, 8, 15, 7, 55, 0, 0, DateTimeKind.Unspecified),
                             Destination = "Dubai",
                             Details = "Non-stop, Wi-Fi available, In-flight meals",
@@ -130,7 +139,9 @@ namespace FlightBookingBlazorThesis.Server.Migrations
                         new
                         {
                             Number = 2,
+                            ArrivalDate = new DateTime(2023, 8, 15, 9, 55, 0, 0, DateTimeKind.Unspecified),
                             CategoryId = 2,
+                            DepartureCity = "Islamabad",
                             DepartureDate = new DateTime(2023, 8, 20, 10, 0, 0, 0, DateTimeKind.Unspecified),
                             Destination = "New York",
                             Details = "Layover, In-flight entertainment",
@@ -139,7 +150,9 @@ namespace FlightBookingBlazorThesis.Server.Migrations
                         new
                         {
                             Number = 3,
+                            ArrivalDate = new DateTime(2023, 8, 15, 9, 55, 0, 0, DateTimeKind.Unspecified),
                             CategoryId = 1,
+                            DepartureCity = "Islamabad",
                             DepartureDate = new DateTime(2023, 8, 25, 14, 30, 0, 0, DateTimeKind.Unspecified),
                             Destination = "London",
                             Details = "Non-stop, Extra legroom",
@@ -148,8 +161,10 @@ namespace FlightBookingBlazorThesis.Server.Migrations
                         new
                         {
                             Number = 4,
+                            ArrivalDate = new DateTime(2023, 8, 15, 9, 55, 0, 0, DateTimeKind.Unspecified),
                             CategoryId = 1,
-                            DepartureDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DepartureCity = "Islamabad",
+                            DepartureDate = new DateTime(2023, 8, 25, 14, 30, 0, 0, DateTimeKind.Unspecified),
                             Destination = "Amsterdam",
                             Details = "Departuring from Budapest at 21:10 Arriving to Amsterdam at :0 Arlines: Wizz Air Duration: 2 hours and 10 mins",
                             ImageUrl = "https://wizzair.com/static/images/default-source/press-office/logos/logos-without-url/wizz_logo_1_cl_baa8bb65.jpg"
@@ -157,7 +172,9 @@ namespace FlightBookingBlazorThesis.Server.Migrations
                         new
                         {
                             Number = 5,
+                            ArrivalDate = new DateTime(2023, 8, 15, 9, 55, 0, 0, DateTimeKind.Unspecified),
                             CategoryId = 3,
+                            DepartureCity = "Islamabad",
                             DepartureDate = new DateTime(2023, 9, 10, 12, 45, 0, 0, DateTimeKind.Unspecified),
                             Destination = "Tokyo",
                             Details = "Non-stop, Wi-Fi available",
@@ -166,7 +183,9 @@ namespace FlightBookingBlazorThesis.Server.Migrations
                         new
                         {
                             Number = 6,
+                            ArrivalDate = new DateTime(2023, 8, 15, 9, 55, 0, 0, DateTimeKind.Unspecified),
                             CategoryId = 3,
+                            DepartureCity = "Islamabad",
                             DepartureDate = new DateTime(2023, 9, 15, 8, 30, 0, 0, DateTimeKind.Unspecified),
                             Destination = "Sydney",
                             Details = "Non-stop, In-flight meals",
@@ -287,6 +306,54 @@ namespace FlightBookingBlazorThesis.Server.Migrations
                         });
                 });
 
+            modelBuilder.Entity("FlightBookingBlazorThesis.Shared.Order", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("FlightBookingBlazorThesis.Shared.OrderItem", b =>
+                {
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FlightId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FlightTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("OrderId", "FlightId", "FlightTypeId");
+
+                    b.HasIndex("FlightId");
+
+                    b.HasIndex("FlightTypeId");
+
+                    b.ToTable("OrderItems");
+                });
+
             modelBuilder.Entity("FlightBookingBlazorThesis.Shared.User", b =>
                 {
                     b.Property<int>("Id")
@@ -345,9 +412,41 @@ namespace FlightBookingBlazorThesis.Server.Migrations
                     b.Navigation("FlightType");
                 });
 
+            modelBuilder.Entity("FlightBookingBlazorThesis.Shared.OrderItem", b =>
+                {
+                    b.HasOne("FlightBookingBlazorThesis.Shared.Flight", "Flight")
+                        .WithMany()
+                        .HasForeignKey("FlightId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FlightBookingBlazorThesis.Shared.FlightType", "FlightType")
+                        .WithMany()
+                        .HasForeignKey("FlightTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FlightBookingBlazorThesis.Shared.Order", "Order")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Flight");
+
+                    b.Navigation("FlightType");
+
+                    b.Navigation("Order");
+                });
+
             modelBuilder.Entity("FlightBookingBlazorThesis.Shared.Flight", b =>
                 {
                     b.Navigation("Variants");
+                });
+
+            modelBuilder.Entity("FlightBookingBlazorThesis.Shared.Order", b =>
+                {
+                    b.Navigation("OrderItems");
                 });
 #pragma warning restore 612, 618
         }

@@ -13,8 +13,10 @@ else
             <img class="media-img" src="@flight.ImageUrl" alt="@flight.Destination" />
         </div>
         <div class="media-body">
+            <h2 class="mb-0">@flight.DepartureCity</h2>
+            <p><strong>Departure:</strong> @flight.DepartureDate.ToString("dd-MM-yyyy HH:mm:ss")</p>
             <h2 class="mb-0">@flight.Destination</h2>
-            <p><strong>Departure Date:</strong> @flight.DepartureDate.ToShortDateString()</p>
+            <p><strong>Arrival:</strong> @flight.ArrivalDate.ToString("dd-MM-yyyy HH:mm:ss")</p>
             <p>@flight.Details</p>
             @if (flight.Variants != null && flight.Variants.Count > 1)
             {

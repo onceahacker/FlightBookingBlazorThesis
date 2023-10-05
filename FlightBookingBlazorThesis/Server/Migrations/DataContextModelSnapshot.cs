@@ -90,8 +90,15 @@ namespace FlightBookingBlazorThesis.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Number"));
 
+                    b.Property<DateTime>("ArrivalDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
+
+                    b.Property<string>("DepartureCity")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DepartureDate")
                         .HasColumnType("datetime2");
@@ -118,7 +125,9 @@ namespace FlightBookingBlazorThesis.Server.Migrations
                         new
                         {
                             Number = 1,
+                            ArrivalDate = new DateTime(2023, 8, 15, 9, 55, 0, 0, DateTimeKind.Unspecified),
                             CategoryId = 3,
+                            DepartureCity = "Islamabad",
                             DepartureDate = new DateTime(2023, 8, 15, 7, 55, 0, 0, DateTimeKind.Unspecified),
                             Destination = "Dubai",
                             Details = "Non-stop, Wi-Fi available, In-flight meals",
@@ -127,7 +136,9 @@ namespace FlightBookingBlazorThesis.Server.Migrations
                         new
                         {
                             Number = 2,
+                            ArrivalDate = new DateTime(2023, 8, 15, 9, 55, 0, 0, DateTimeKind.Unspecified),
                             CategoryId = 2,
+                            DepartureCity = "Islamabad",
                             DepartureDate = new DateTime(2023, 8, 20, 10, 0, 0, 0, DateTimeKind.Unspecified),
                             Destination = "New York",
                             Details = "Layover, In-flight entertainment",
@@ -136,7 +147,9 @@ namespace FlightBookingBlazorThesis.Server.Migrations
                         new
                         {
                             Number = 3,
+                            ArrivalDate = new DateTime(2023, 8, 15, 9, 55, 0, 0, DateTimeKind.Unspecified),
                             CategoryId = 1,
+                            DepartureCity = "Islamabad",
                             DepartureDate = new DateTime(2023, 8, 25, 14, 30, 0, 0, DateTimeKind.Unspecified),
                             Destination = "London",
                             Details = "Non-stop, Extra legroom",
@@ -145,8 +158,10 @@ namespace FlightBookingBlazorThesis.Server.Migrations
                         new
                         {
                             Number = 4,
+                            ArrivalDate = new DateTime(2023, 8, 15, 9, 55, 0, 0, DateTimeKind.Unspecified),
                             CategoryId = 1,
-                            DepartureDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DepartureCity = "Islamabad",
+                            DepartureDate = new DateTime(2023, 8, 25, 14, 30, 0, 0, DateTimeKind.Unspecified),
                             Destination = "Amsterdam",
                             Details = "Departuring from Budapest at 21:10 Arriving to Amsterdam at :0 Arlines: Wizz Air Duration: 2 hours and 10 mins",
                             ImageUrl = "https://wizzair.com/static/images/default-source/press-office/logos/logos-without-url/wizz_logo_1_cl_baa8bb65.jpg"
@@ -154,7 +169,9 @@ namespace FlightBookingBlazorThesis.Server.Migrations
                         new
                         {
                             Number = 5,
+                            ArrivalDate = new DateTime(2023, 8, 15, 9, 55, 0, 0, DateTimeKind.Unspecified),
                             CategoryId = 3,
+                            DepartureCity = "Islamabad",
                             DepartureDate = new DateTime(2023, 9, 10, 12, 45, 0, 0, DateTimeKind.Unspecified),
                             Destination = "Tokyo",
                             Details = "Non-stop, Wi-Fi available",
@@ -163,7 +180,9 @@ namespace FlightBookingBlazorThesis.Server.Migrations
                         new
                         {
                             Number = 6,
+                            ArrivalDate = new DateTime(2023, 8, 15, 9, 55, 0, 0, DateTimeKind.Unspecified),
                             CategoryId = 3,
+                            DepartureCity = "Islamabad",
                             DepartureDate = new DateTime(2023, 9, 15, 8, 30, 0, 0, DateTimeKind.Unspecified),
                             Destination = "Sydney",
                             Details = "Non-stop, In-flight meals",

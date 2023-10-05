@@ -96,7 +96,7 @@
         {
             return await _context.Flights
                                 .Where(f => f.Destination.ToLower().Contains(searchText.ToLower())
-                                || f.Destination.ToLower().Contains(searchText.ToLower()))
+                                || f.DepartureCity.ToLower().Contains(searchText.ToLower()))
                                 .Include(f => f.Variants)
                                 .ToListAsync();
         }

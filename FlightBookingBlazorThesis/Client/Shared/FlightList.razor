@@ -19,12 +19,14 @@ else
                  </div>
                  <div class="media-body">
                     <a href="/flight/@flight.Number">
-                         <h4 class="mb-0">@flight.Destination</h4>
+                        <h4 class="mb-0">@flight.DepartureCity > @flight.Destination</h4>
                     </a>
                 <p>@flight.Details</p>
-                    <p><strong>Departure Date:</strong> @flight.DepartureDate.ToShortDateString()</p>
+                    <p><strong>Departure Date:</strong> @flight.DepartureDate.ToString("dd-MM-yyyy HH:mm:ss")
+                        <br/>
+                    <strong>Arrival Date:</strong> @flight.ArrivalDate.ToString("dd-MM-yyyy HH:mm:ss")</p>
                 <h5 class="price">
-                    @GetPriceText(flight)
+                        @GetPriceText(flight)
                 </h5>
             </div>
         </li>

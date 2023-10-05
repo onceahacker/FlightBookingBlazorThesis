@@ -16,9 +16,11 @@ namespace FlightBookingBlazorThesis.Shared
         [Key]
         public int Number { get; set; }
         public string Destination { get; set; } = string.Empty;
+        public string DepartureCity { get; set; } = string.Empty;
         public string Details { get; set; } = string.Empty; 
         public string ImageUrl { get; set; } = string.Empty;
         public DateTime DepartureDate { get; set; }
+        public DateTime ArrivalDate { get; set; }
 
         public Category? Category { get; set; }
         public int CategoryId { get; set; } 
