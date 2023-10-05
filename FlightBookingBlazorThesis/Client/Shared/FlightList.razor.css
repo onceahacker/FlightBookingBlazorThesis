@@ -28,3 +28,36 @@
 
     }
 }
+
+@media (max-width: 768px) {
+    .filter-section label {
+        display: block;
+        margin-top: 5px;
+    }
+
+    .filter-section .form-control,
+    .filter-section .form-range {
+        margin-bottom: 10px;
+    }
+
+    .filter-section button {
+        width: 100%;
+    }
+}
+
+.media-img_wrapper {
+    flex-shrink: 0;
+        /* Prevents the image wrapper from shrinking if the content overflows. */
+}
+
+.media-body h4 {
+    font-size: 1.2rem; /* Adjust according to preference */
+}
+
+.media-body p {
+    font-size: 0.9rem; /* Adjust according to preference */
+}
+
+.price {
+    font-size: 1.1rem; /* Adjust according to preference */
+}

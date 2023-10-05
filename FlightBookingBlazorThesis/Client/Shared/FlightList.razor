@@ -1,43 +1,73 @@
 ﻿@inject IFlightService FlightService
 @implements IDisposable
 
-@if(FlightService.Flights == null || FlightService.Flights.Count == 0)
+<div class="filter-section container mt-1 bg-light p-4 rounded">
+    <div class="row gy-3 align-items-center">
+        <div class="col-md-3">
+            <div class="input-group">
+                <input type="text" class="form-control" @bind="filterDepartureCity" placeholder="Departure City" aria-label="Departure City" aria-describedby="inputGroupPrepend1">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="input-group">
+                <input type="text" class="form-control" @bind="filterDestinationCity" placeholder="Destination City" aria-label="Destination City" aria-describedby="inputGroupPrepend2">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <label for="priceRange" class="form-label">Price Range: <strong>$@maxPrice</strong></label>
+            </div>
+            <input type="range" min="0" max="1000" class="form-range" id="priceRange" @bind="maxPrice">
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-primary w-100" @onclick="ApplyFilters">Apply Filters</button>
+        </div>
+    </div>
+</div>
+
+@if (FlightService.Flights == null || !FilteredFlights.Any())
 {
     <span> @FlightService.Message</span>
 }
 else
 {
 
-<u1 class="list-unstyled">
-    @foreach (var flight in FlightService.Flights)
-    {
-        <li class="media my-3">
-            <div class= "media-img_wrapper mr-2">
-                    <a href="/flight/@flight.Number">
-                        <img class="media-img" src="@flight.ImageUrl" atl="@flight.Destination" />
-                    </a>
-                 </div>
-                 <div class="media-body">
-                    <a href="/flight/@flight.Number">
-                        <h4 class="mb-0">@flight.DepartureCity > @flight.Destination</h4>
-                    </a>
-                <p>@flight.Details</p>
-                    <p><strong>Departure Date:</strong> @flight.DepartureDate.ToString("dd-MM-yyyy HH:mm:ss")
-                        <br/>
-                    <strong>Arrival Date:</strong> @flight.ArrivalDate.ToString("dd-MM-yyyy HH:mm:ss")</p>
-                <h5 class="price">
-                        @GetPriceText(flight)
-                </h5>
-            </div>
-        </li>
-    }
 
-</u1>
+    <ul class="list-unstyled">
+        @foreach (var flight in FilteredFlights)
+        {
+            <li class="media my-3 border rounded p-3 bg-light">
+                <div class="media-img_wrapper mr-3 pe-3 d-flex align-items-center">
+                    <!-- added pe-3 here -->
+                    <a href="/flight/@flight.Number">
+                        <img class="media-img img-fluid" src="@flight.ImageUrl" alt="@flight.Destination" style="max-width: 150px;" />
+                    </a>
+                </div>
+                <div class="media-body pl">
+                    <a href="/flight/@flight.Number" class="text-dark text-decoration-none">
+                        <h4 class="mb-1">@flight.DepartureCity > @flight.Destination</h4>
+                    </a>
+                    <p class="text-muted">@flight.Details</p>
+                    <p>
+                        <span class="text-primary font-weight-bold">Departure:</span> @flight.DepartureDate.ToString("dd-MM-yyyy HH:mm:ss") <br />
+                        <span class="text-success font-weight-bold">Arrival:</span> @flight.ArrivalDate.ToString("dd-MM-yyyy HH:mm:ss")
+                    </p>
+                    <h5 class="price text-danger font-weight-bold">
+                        @GetPriceText(flight)
+                    </h5>
+                </div>
+            </li>
+        }
+    </ul>
+
 }
 
 
 @code {
 
+    private string filterDepartureCity = string.Empty;
+    private string filterDestinationCity = string.Empty;
+    private decimal maxPrice = 1000;
 
     protected override void OnInitialized()
     {
@@ -52,16 +82,37 @@ else
     private string GetPriceText(Flight flight)
     {
         var variants = flight.Variants;
-        if(variants.Count == 0)
+        if (variants.Count == 0)
         {
             return string.Empty;
         }
         else if (variants.Count == 1)
         {
-            return $"${ variants[0].Price}";
+            return $"${variants[0].Price}";
 
         }
         decimal minPrice = variants.Min(v => v.Price);
         return $"Starting at ${minPrice}";
+    }
+
+    private IEnumerable<Flight> FilteredFlights => FlightService.Flights.Where(f =>
+        (string.IsNullOrEmpty(filterDepartureCity) || f.DepartureCity.Contains(filterDepartureCity, StringComparison.OrdinalIgnoreCase)) &&
+        (string.IsNullOrEmpty(filterDestinationCity) || f.Destination.Contains(filterDestinationCity, StringComparison.OrdinalIgnoreCase)) &&
+        GetMinPrice(f) <= maxPrice
+    );
+
+    private decimal GetMinPrice(Flight flight)
+    {
+        if (flight.Variants.Count == 0)
+        {
+            return 0;
+        }
+
+        return flight.Variants.Min(v => v.Price);
+    }
+
+    private void ApplyFilters()
+    {
+        StateHasChanged(); // trigger a component re-render
     }
 }
